@@ -2,217 +2,434 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>합주실 예약 관리 시스템 | 공정한 예약 운영 솔루션</title>
+  <title>합주인 | 공정한 합주실 예약 관리 시스템</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- SEO / GEO -->
-  <meta name="description" content="합주실, 스터디룸, 회의실 예약을 공정하게 운영하는 맞춤형 예약 시스템. 노쇼 방지, 공정성 확보, 운영 자동화까지 제공합니다.">
+  <meta name="description" content="합주실, 스터디룸 등을 공정하게 운영하는 맞춤형 예약 시스템. 노쇼 방지 및 운영 자동화 솔루션 합주인.">
 
-  <!-- 구조화 데이터 -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "합주실 예약 관리 시스템",
-    "applicationCategory": "BusinessApplication",
-    "description": "공정한 자원 분배를 위한 예약 관리 시스템"
-  }
-  </script>
+  <!-- Fonts (Local Pretendard) -->
+  <style>
+    @font-face {
+      font-family: 'Pretendard';
+      font-weight: 400;
+      font-display: swap;
+      src: url('font/woff2/Pretendard-Regular.subset.woff2') format('woff2'),
+           url('font/woff/Pretendard-Regular.subset.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Pretendard';
+      font-weight: 600;
+      font-display: swap;
+      src: url('font/woff2/Pretendard-SemiBold.subset.woff2') format('woff2'),
+           url('font/woff/Pretendard-SemiBold.subset.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Pretendard';
+      font-weight: 700;
+      font-display: swap;
+      src: url('font/woff2/Pretendard-Bold.subset.woff2') format('woff2'),
+           url('font/woff/Pretendard-Bold.subset.woff') format('woff');
+    }
+  </style>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    body {
+    :root {
+      --primary: #A855F7;
+      --primary-dark: #7E22CE;
+      --bg: #000000;
+      --surface: #121212;
+      --surface-light: #1E1E1E;
+      --text-main: #FFFFFF;
+      --text-sub: #9CA3AF;
+      --border: #262626;
+      --radius: 8px;
+    }
+
+    * {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      color: #222;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Pretendard", -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
     .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 60px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
-    h1, h2, h3 {
-      margin-bottom: 20px;
+
+    /* Navbar */
+    nav {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 100;
     }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    /* Hero Section */
     .hero {
-      background: #111;
-      color: white;
+      padding: 140px 0 100px;
       text-align: center;
-      padding: 120px 20px;
+      background: radial-gradient(circle at 50% -20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
     }
-    .hero button {
-      margin-top: 20px;
-      padding: 14px 24px;
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-sub);
+      margin-bottom: 40px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      word-break: keep-all;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      padding: 16px 32px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
       border: none;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 1rem;
     }
-    .section {
-      border-bottom: 1px solid #eee;
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
     }
+
+    /* Section Styles */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 48px;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    /* Grid/Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
     .card {
-      border: 1px solid #eee;
-      padding: 20px;
-      margin-bottom: 15px;
-      border-radius: 8px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
     }
-    .highlight {
-      font-weight: bold;
-      color: #000;
+
+    .card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      background-color: rgba(168, 85, 247, 0.05);
     }
+
+    .card i {
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--text-sub);
+      word-break: keep-all;
+    }
+
+    /* Comparison Table */
+    .comparison-container {
+      overflow-x: auto;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 24px;
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
     }
-    td, th {
-      border: 1px solid #ddd;
-      padding: 12px;
+
+    th, td {
+      padding: 20px;
       text-align: left;
+      border-bottom: 1px solid var(--border);
     }
-    .contact {
-      background: #f9f9f9;
+
+    th {
+      background: var(--surface-light);
+      font-weight: 600;
     }
+
+    .highlight-cell {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Contact Form */
+    .contact-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 48px;
+      border-radius: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
     input, textarea {
       width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    button.submit {
-      width: 100%;
-      background: #111;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: var(--radius);
       color: white;
-      padding: 14px;
-      border: none;
-      cursor: pointer;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn-submit {
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Target the SVG specifically because Lucide replaces the <i> tag */
+    .btn-submit .lucide {
+      width: 18px !important;
+      height: 18px !important;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .btn-submit:hover .lucide {
+      transform: translate(6px, -6px) rotate(15deg);
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-sub);
+      font-size: 0.875rem;
+    }
+
+    /* Animations */
+    [data-lucide] {
+      width: 32px;
+      height: 32px;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .section-title { font-size: 2rem; }
+      .contact-wrapper { padding: 24px; }
     }
   </style>
 </head>
 
 <body>
 
+<nav>
+  <div class="container" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+    <div class="logo">합주인</div>
+    <a href="#contact" class="btn-primary" style="padding: 10px 20px; font-size: 0.875rem;">문의하기</a>
+  </div>
+</nav>
+
 <!-- HERO -->
 <section class="hero">
-  <h1>합주실 예약, 아직도 선착순에 맡기고 있나요?</h1>
-  <p>공정성 · 효율성 · 운영 자동화를 동시에 해결하는 예약 시스템</p>
-  <button onclick="scrollToContact()">문의하고 시작하기</button>
-</section>
-
-<!-- PROBLEM -->
-<section class="section container">
-  <h2>이런 문제가 반복되고 있지 않나요?</h2>
-
-  <div class="card">
-    <span class="highlight">특정 사용자 독점 예약</span> → 인기 시간대가 항상 같은 사람에게 돌아감
-  </div>
-  <div class="card">
-    <span class="highlight">노쇼 문제</span> → 예약 후 사용하지 않아 공간이 낭비됨
-  </div>
-  <div class="card">
-    <span class="highlight">운영 부담 증가</span> → 관리자 수동 조정, 공지, 갈등 발생
+  <div class="container">
+    <h1>합주실 예약, <span style="color: var(--primary)">공정함</span>을 더하다</h1>
+    <p>아직도 선착순 경쟁에 맡기고 있나요? 정책 기반 자동화 시스템으로 모두에게 공정한 합주실 예약 문화를 만드세요.</p>
+    <button class="btn-primary" onclick="scrollToContact()">
+      <i data-lucide="zap"></i> 지금 시작하기
+    </button>
   </div>
 </section>
 
-<!-- SOLUTION -->
-<section class="section container">
-  <h2>우리는 이렇게 해결합니다</h2>
-
-  <div class="card">
-    예약 횟수 제한 + 대기열 시스템 → <b>공정한 자원 분배</b>
-  </div>
-  <div class="card">
-    자동 취소 및 패널티 → <b>노쇼 최소화</b>
-  </div>
-  <div class="card">
-    운영 정책 커스터마이징 → <b>관리 부담 감소</b>
+<!-- PROBLEMS -->
+<section>
+  <div class="container">
+    <h2 class="section-title">이런 문제가 반복되고 있지 않나요?</h2>
+    <div class="grid">
+      <div class="card">
+        <i data-lucide="lock"></i>
+        <h3>특정 사용자 독점</h3>
+        <p>인기 시간대가 항상 같은 사람에게만 돌아가는 문제, 예약 횟수 제한과 정책으로 해결합니다.</p>
+      </div>
+      <div class="card">
+        <i data-lucide="user-x"></i>
+        <h3>고질적인 노쇼</h3>
+        <p>예약만 하고 나타나지 않는 '유령 예약'. 자동 취소와 패널티 시스템으로 공간 낭비를 막습니다.</p>
+      </div>
+      <div class="card">
+        <i data-lucide="settings-2"></i>
+        <h3>관리 업무 과부하</h3>
+        <p>수동 조정과 민원 처리에 지친 관리자님, 정책만 설정하면 시스템이 자동으로 운영합니다.</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- USE CASE -->
-<section class="section container">
-  <h2>이런 환경에서 특히 효과적입니다</h2>
-
-  <div class="card">대학교 밴드 동아리 합주실</div>
-  <div class="card">예약 경쟁이 심한 스터디룸</div>
-  <div class="card">회의실 운영이 필요한 조직</div>
+<!-- SOLUTIONS -->
+<section style="background-color: var(--surface)">
+  <div class="container">
+    <h2 class="section-title">합주인의 해결책</h2>
+    <div class="grid">
+      <div class="card" style="background: var(--bg)">
+        <i data-lucide="scale"></i>
+        <h3>공정한 대기열</h3>
+        <p>예약 빈도와 가중치를 고려한 지능형 분배 시스템으로 자원의 공정성을 확보합니다.</p>
+      </div>
+      <div class="card" style="background: var(--bg)">
+        <i data-lucide="shield-check"></i>
+        <h3>강력한 노쇼 방지</h3>
+        <p>실시간 확인 및 정책 기반 패널티를 통해 노쇼 비율을 획기적으로 낮춥니다.</p>
+      </div>
+      <div class="card" style="background: var(--bg)">
+        <i data-lucide="sliders"></i>
+        <h3>유연한 정책 커스텀</h3>
+        <p>조직의 특성에 맞게 예약 가능 시간, 횟수, 연속 예약 제한 등을 자유롭게 설정하세요.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- COMPARISON -->
-<section class="section container">
-  <h2>기존 방식과 무엇이 다른가요?</h2>
-
-  <table>
-    <tr>
-      <th>방식</th>
-      <th>문제점</th>
-    </tr>
-    <tr>
-      <td>구글 캘린더</td>
-      <td>공정성 없음, 선착순 경쟁</td>
-    </tr>
-    <tr>
-      <td>수기 예약</td>
-      <td>관리 비용 증가, 오류 발생</td>
-    </tr>
-    <tr>
-      <td><b>우리 서비스</b></td>
-      <td>정책 기반 자동화 + 공정성 확보</td>
-    </tr>
-  </table>
-</section>
-
-<!-- PROCESS -->
-<section class="section container">
-  <h2>서비스 이용 방법</h2>
-
-  <div class="card"><b>1. 문의하기</b> → 현재 운영 방식 공유</div>
-  <div class="card"><b>2. 운영 방식 상담</b> → 문제 분석</div>
-  <div class="card"><b>3. 맞춤 시스템 세팅</b> → 정책 적용</div>
-  <div class="card"><b>4. 서비스 사용 시작</b></div>
-</section>
-
-<!-- FAQ -->
-<section class="section container">
-  <h2>자주 묻는 질문</h2>
-
-  <div class="card">
-    <b>Q. 왜 바로 회원가입이 안되나요?</b><br>
-    각 공간마다 운영 방식이 다르기 때문에 맞춤 설정 후 제공됩니다.
-  </div>
-
-  <div class="card">
-    <b>Q. 어떤 공간에서 사용할 수 있나요?</b><br>
-    합주실, 스터디룸, 회의실 등 예약 기반 공간에서 사용 가능합니다.
-  </div>
-
-  <div class="card">
-    <b>Q. 무료인가요?</b><br>
-    초기 상담 후 운영 규모에 따라 안내드립니다.
+<section>
+  <div class="container">
+    <h2 class="section-title">왜 합주인인가요?</h2>
+    <div class="comparison-container">
+      <table>
+        <thead>
+          <tr>
+            <th>방식</th>
+            <th>주요 문제점</th>
+            <th>사용자 경험</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>구글 캘린더</td>
+            <td>공정성 제어 불가, 선착순 경쟁</td>
+            <td>불투명함</td>
+          </tr>
+          <tr>
+            <td>수기/채팅 예약</td>
+            <td>높은 관리 비용, 누락 및 오류</td>
+            <td>답답함</td>
+          </tr>
+          <tr style="background: rgba(168, 85, 247, 0.05)">
+            <td class="highlight-cell">합주인 (Hapju-in)</td>
+            <td class="highlight-cell">정책 기반 자동화 및 공정성 확보</td>
+            <td class="highlight-cell">신뢰와 편안함</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="section contact" id="contact">
+<section id="contact">
   <div class="container">
-    <h2>문의하기</h2>
-    <p>서비스 도입을 원하시면 아래 정보를 남겨주세요</p>
-
-    <form>
-      <input type="text" placeholder="이름" required />
-      <input type="email" placeholder="이메일" required />
-      <input type="text" placeholder="조직 / 공간 이름" />
-      <textarea rows="5" placeholder="현재 운영 방식이나 문제를 설명해주세요"></textarea>
-      <button class="submit">문의 보내기</button>
-    </form>
+    <h2 class="section-title">서비스 도입 문의</h2>
+    <div class="contact-wrapper">
+      <form>
+        <div class="form-group">
+          <input type="text" placeholder="이름" required />
+        </div>
+        <div class="form-group">
+          <input type="email" placeholder="이메일 주소" required />
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="조직 / 합주실 이름" />
+        </div>
+        <div class="form-group">
+          <textarea rows="5" placeholder="현재 운영 방식이나 겪고 계신 문제를 설명해주세요..."></textarea>
+        </div>
+        <button class="btn-primary btn-submit">문의 보내기 <i data-lucide="send"></i></button>
+      </form>
+    </div>
   </div>
 </section>
 
+<footer>
+  <div class="container">
+    <p>&copy; 2026 합주인. All rights reserved. | 공정한 합주 문화를 만드는 합주인.</p>
+  </div>
+</footer>
+
 <script>
-function scrollToContact() {
-  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-}
+  // Initialize Lucide Icons
+  lucide.createIcons();
+
+  function scrollToContact() {
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  }
 </script>
 
 </body>
