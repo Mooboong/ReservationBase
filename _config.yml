@@ -1,0 +1,4 @@
+# GitHub Pages configuration
+# This excludes the 'docs' folder from being processed/served by Jekyll.
+exclude:
+  - docs
