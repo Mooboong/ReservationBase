@@ -426,20 +426,22 @@
   <div class="container">
     <h2 class="section-title">서비스 도입 문의</h2>
     <div class="contact-wrapper">
-      <form>
+      <form action="https://formspree.io/f/xbdwoqrg" method="POST">
         <div class="form-group">
-          <input type="text" placeholder="이름" required />
+          <input type="text" name="name" placeholder="이름" required />
         </div>
         <div class="form-group">
-          <input type="email" placeholder="이메일 주소" required />
+          <input type="email" name="_replyto" placeholder="이메일 주소" required />
         </div>
         <div class="form-group">
-          <input type="text" placeholder="조직 / 합주실 이름" />
+          <input type="text" name="organization" placeholder="조직 / 합주실 이름" />
         </div>
         <div class="form-group">
-          <textarea rows="5" placeholder="현재 운영 방식이나 겪고 계신 문제를 설명해주세요..."></textarea>
+          <textarea name="message" rows="5" placeholder="현재 운영 방식이나 겪고 계신 문제를 설명해주세요..."></textarea>
         </div>
-        <button class="btn-primary btn-submit">문의 보내기 <i data-lucide="send"></i></button>
+        <!-- 스팸 방지용 -->
+        <input type="text" name="_gotcha" style="display:none" />
+        <button type="submit" class="btn-primary btn-submit">문의 보내기 <i data-lucide="send"></i></button>
       </form>
     </div>
   </div>
