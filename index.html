@@ -295,6 +295,32 @@
       transform: translate(6px, -6px) rotate(15deg);
     }
 
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--surface-light);
+      border: 1px solid var(--primary);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 40px;
+      font-weight: 600;
+      z-index: 1000;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
     /* Footer */
     footer {
       padding: 48px 0;
@@ -426,7 +452,7 @@
   <div class="container">
     <h2 class="section-title">서비스 도입 문의</h2>
     <div class="contact-wrapper">
-      <form action="https://formspree.io/f/xbdwoqrg" method="POST">
+      <form id="contact-form" action="https://formspree.io/f/xbdwoqrg" method="POST">
         <div class="form-group">
           <input type="text" name="name" placeholder="이름" required />
         </div>
@@ -441,7 +467,7 @@
         </div>
         <!-- 스팸 방지용 -->
         <input type="text" name="_gotcha" style="display:none" />
-        <button type="submit" class="btn-primary btn-submit">문의 보내기 <i data-lucide="send"></i></button>
+        <button type="submit" id="submit-btn" class="btn-primary btn-submit">문의 보내기 <i data-lucide="send"></i></button>
       </form>
     </div>
   </div>
@@ -453,6 +479,12 @@
   </div>
 </footer>
 
+<!-- Toast Element -->
+<div id="toast">
+  <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+  <span id="toast-message">문의가 성공적으로 전송되었습니다!</span>
+</div>
+
 <script>
   // Initialize Lucide Icons
   lucide.createIcons();
@@ -460,6 +492,59 @@
   function scrollToContact() {
     document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
   }
+
+  // AJAX Form Submission
+  const form = document.getElementById("contact-form");
+  const submitBtn = document.getElementById("submit-btn");
+  const toast = document.getElementById("toast");
+  const toastMsg = document.getElementById("toast-message");
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    
+    // UI Feedback: Loading
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '전송 중...';
+
+    const data = new FormData(event.target);
+    
+    try {
+      const response = await fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        showToast("문의가 성공적으로 전송되었습니다! 금방 연락드릴게요.");
+        form.reset();
+      } else {
+        const errorData = await response.json();
+        showToast("오류가 발생했습니다: " + (errorData.errors ? errorData.errors[0].message : "다시 시도해 주세요."), true);
+      }
+    } catch (error) {
+      showToast("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.", true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+      lucide.createIcons(); // Re-render icons inside button
+    }
+  }
+
+  function showToast(message, isError = false) {
+    toastMsg.textContent = message;
+    toast.style.borderColor = isError ? "#EF4444" : "#A855F7";
+    toast.classList.add("show");
+    
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 4000);
+  }
+
+  form.addEventListener("submit", handleSubmit);
 </script>
 
 </body>
